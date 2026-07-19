@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 
 from app.core.config import settings
+from app.models.base_model import Base
 
 DATABASE_URL = (
     f"postgresql+psycopg2://"
