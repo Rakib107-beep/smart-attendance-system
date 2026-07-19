@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.database.session import get_db
 from app.schemas.student_schema import StudentCreate, StudentResponse
 from app.services.student_service import StudentService
+from fastapi import Query
 
 router = APIRouter(
     prefix="/api/v1/students",
@@ -19,11 +20,23 @@ def create_student(
     return StudentService.create_student(db, student)
 
 
-@router.get("/", response_model=list[StudentResponse])
+@router.get("/")
 def get_students(
-        db: Session = Depends(get_db)
+    page: int = Query(1, ge=1),
+    size: int = Query(10, ge=1, le=100),
+    search: str | None = None,
+    sort_by: str = "id",
+    direction: str = "asc",
+    db: Session = Depends(get_db)
 ):
-    return StudentService.get_students(db)
+    return StudentService.get_students(
+        db,
+        page,
+        size,
+        search,
+        sort_by,
+        direction
+    )
 
 @router.get("/{student_id}")
 def get_student_by_id(

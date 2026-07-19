@@ -1,7 +1,9 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import desc, asc
 
 from app.models.student import Student
 from app.schemas.student_schema import StudentCreate
+from sqlalchemy import or_
 
 
 class StudentRepository:
@@ -23,8 +25,53 @@ class StudentRepository:
         return db_student
 
     @staticmethod
-    def get_all(db: Session):
-        return db.query(Student).all()
+    def get_all(
+            db,
+            page: int = 1,
+            size: int = 10,
+            search: str = None,
+            sort_by: str = "id",
+            direction: str = "asc"
+    ):
+        query = db.query(Student)
+
+        if search:
+            query = query.filter(
+                or_(
+                    Student.student_id.ilike(f"%{search}%"),
+                    Student.full_name.ilike(f"%{search}%"),
+                    Student.email.ilike(f"%{search}%"),
+                    Student.department.ilike(f"%{search}%")
+                )
+            )
+
+        # Sorting
+        if hasattr(Student, sort_by):
+            column = getattr(Student, sort_by)
+
+            if direction.lower() == "desc":
+                query = query.order_by(desc(column))
+            else:
+                query = query.order_by(asc(column))
+
+        skip = (page - 1) * size
+
+        total = query.count()
+
+        students = (
+            query
+            .offset(skip)
+            .limit(size)
+            .all()
+        )
+
+        return {
+            "content": students,
+            "page": page,
+            "size": size,
+            "total_elements": total,
+            "total_pages": (total + size - 1) // size
+        }
 
     @staticmethod
     def get_by_id(db, student_id: int):
