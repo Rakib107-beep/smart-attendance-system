@@ -4,7 +4,8 @@ from sqlalchemy.sql.expression import desc, asc
 from app.models.student import Student
 from app.schemas.student_schema import StudentCreate
 from sqlalchemy import or_
-
+from sqlalchemy.exc import IntegrityError
+from app.exceptions.custom_exception import DuplicateStudentException
 
 class StudentRepository:
 
