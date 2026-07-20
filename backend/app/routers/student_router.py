@@ -1,21 +1,30 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database.session import get_db
 from app.schemas.student_schema import StudentCreate, StudentResponse
 from app.services.student_service import StudentService
-from fastapi import Query
+from app.auth.dependencies import get_current_user
+from app.auth.role_checker import RoleChecker
+from app.models.enums.role import Role
 
 router = APIRouter(
     prefix="/api/v1/students",
-    tags=["Students"]
+    tags=["Students"],
+    dependencies=[Depends(get_current_user)]
 )
 
 
-@router.post("/", response_model=StudentResponse)
+@router.post(
+    "/",
+    response_model=StudentResponse,
+    dependencies=[
+        Depends(RoleChecker([Role.ADMIN]))
+    ]
+)
 def create_student(
-        student: StudentCreate,
-        db: Session = Depends(get_db)
+    student: StudentCreate,
+    db: Session = Depends(get_db)
 ):
     return StudentService.create_student(db, student)
 
@@ -45,17 +54,34 @@ def get_student_by_id(
 ):
     return StudentService.get_student_by_id(db, student_id)
 
-@router.put("/{student_id}")
+@router.put(
+    "/{student_id}",
+    dependencies=[
+        Depends(RoleChecker([Role.ADMIN]))
+    ]
+)
 def update_student(
     student_id: int,
     student: StudentCreate,
     db: Session = Depends(get_db)
 ):
-    return StudentService.update_student(db, student_id, student)
+    return StudentService.update_student(
+        db,
+        student_id,
+        student
+    )
 
-@router.delete("/{student_id}")
+@router.delete(
+    "/{student_id}",
+    dependencies=[
+        Depends(RoleChecker([Role.ADMIN]))
+    ]
+)
 def delete_student(
     student_id: int,
     db: Session = Depends(get_db)
 ):
-    return StudentService.delete_student(db, student_id)
+    return StudentService.delete_student(
+        db,
+        student_id
+    )

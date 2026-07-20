@@ -4,7 +4,7 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
-from app.exceptions.custom_exception import StudentNotFoundException, DuplicateStudentException
+from app.exceptions.custom_exception import StudentNotFoundException, DuplicateStudentException, InvalidCredentialsException
 
 
 async def student_not_found_exception_handler(
@@ -56,6 +56,22 @@ async def validation_exception_handler(
             "status": 422,
             "error": "Validation Error",
             "message": errors,
+            "path": request.url.path
+        }
+    )
+
+
+async def invalid_credentials_exception_handler(
+        request: Request,
+        exc: InvalidCredentialsException
+):
+    return JSONResponse(
+        status_code=401,
+        content={
+            "timestamp": datetime.now().isoformat(),
+            "status": 401,
+            "error": "Unauthorized",
+            "message": exc.message,
             "path": request.url.path
         }
     )
