@@ -12,3 +12,8 @@ class DuplicateStudentException(Exception):
 class InvalidCredentialsException(Exception):
     def __init__(self, message: str):
         self.message = message
+
+class AttendanceException(Exception):
+
+    def __init__(self, message: str):
+        self.message = message

@@ -4,7 +4,8 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
-from app.exceptions.custom_exception import StudentNotFoundException, DuplicateStudentException, InvalidCredentialsException
+from app.exceptions.custom_exception import StudentNotFoundException, DuplicateStudentException, \
+    InvalidCredentialsException, AttendanceException
 
 
 async def student_not_found_exception_handler(
@@ -73,5 +74,16 @@ async def invalid_credentials_exception_handler(
             "error": "Unauthorized",
             "message": exc.message,
             "path": request.url.path
+        }
+    )
+
+async def attendance_exception_handler(
+    request: Request,
+    exc: AttendanceException
+):
+    return JSONResponse(
+        status_code=400,
+        content={
+            "detail": exc.message
         }
     )
