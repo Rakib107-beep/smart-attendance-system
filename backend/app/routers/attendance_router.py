@@ -25,3 +25,15 @@ def check_in(
         db,
         current_user
     )
+@router.post(
+    "/check-out",
+    response_model=AttendanceResponse
+)
+def check_out(
+        db: Session = Depends(get_db),
+        current_user=Depends(get_current_user)
+):
+    return AttendanceService.check_out(
+        db,
+        current_user
+    )

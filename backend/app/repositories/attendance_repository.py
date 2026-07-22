@@ -40,3 +40,4 @@ class AttendanceRepository:
         db.commit()
         db.refresh(attendance)
         return attendance
+

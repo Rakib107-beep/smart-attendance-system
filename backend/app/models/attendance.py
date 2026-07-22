@@ -39,3 +39,20 @@ class Attendance(BaseModel):
         nullable=False,
         default="ON_TIME"
     )
+
+    early_leave_status = Column(
+        String(20),
+        nullable=False,
+        default="NO"
+    )
+
+    working_hours = Column(
+        String(20),
+        nullable=True
+    )
+
+    attendance_status = Column(
+        String(20),
+        nullable=False,
+        default="PRESENT"
+    )
