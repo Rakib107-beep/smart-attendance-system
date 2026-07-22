@@ -1,18 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function EmployeeForm({ onSubmit, loading }) {
+function EmployeeForm({ onSubmit, loading,employee }) {
 
     const [form, setForm] = useState({
-        employee_code: "",
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        department: "",
-        designation: "",
-        joining_date: "",
-        status: "ACTIVE"
-    });
+
+    employee_code: employee?.employee_code || "",
+
+    first_name: employee?.first_name || "",
+
+    last_name: employee?.last_name || "",
+
+    email: employee?.email || "",
+
+    phone: employee?.phone || "",
+
+    department: employee?.department || "",
+
+    designation: employee?.designation || "",
+
+    joining_date: employee?.joining_date || "",
+
+    status: employee?.status || "ACTIVE"
+
+});
+
+    useEffect(() => {
+
+    if (employee) {
+
+        setForm({
+
+            employee_code: employee.employee_code,
+
+            first_name: employee.first_name,
+
+            last_name: employee.last_name,
+
+            email: employee.email,
+
+            phone: employee.phone,
+
+            department: employee.department,
+
+            designation: employee.designation,
+
+            joining_date: employee.joining_date,
+
+            status: employee.status
+
+        });
+
+    }
+
+}, [employee]);
+
 
     function handleChange(e) {
 
