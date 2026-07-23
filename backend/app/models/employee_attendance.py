@@ -11,7 +11,7 @@ class Attendance(BaseModel):
 
     employee_id = Column(
         Integer,
-        ForeignKey("users.id"),
+        ForeignKey("employees.id"),
         nullable=False
     )
 
@@ -31,7 +31,7 @@ class Attendance(BaseModel):
     )
 
     employee = relationship(
-        "User",
+        "Employee",
         back_populates="attendances"
     )
     late_status = Column(
@@ -55,4 +55,10 @@ class Attendance(BaseModel):
         String(20),
         nullable=False,
         default="PRESENT"
+    )
+
+    attendances = relationship(
+        "EmployeeAttendance",
+        back_populates="employee",
+        cascade="all, delete-orphan"
     )
