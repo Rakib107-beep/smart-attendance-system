@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Integer, Date, Time, ForeignKey
+from sqlalchemy import Column, Integer, Date, Time, ForeignKey, String
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.sqltypes import String
 
 from app.models.base_model import BaseModel
 
@@ -30,10 +29,6 @@ class Attendance(BaseModel):
         nullable=True
     )
 
-    employee = relationship(
-        "Employee",
-        back_populates="attendances"
-    )
     late_status = Column(
         String(20),
         nullable=False,
@@ -57,8 +52,7 @@ class Attendance(BaseModel):
         default="PRESENT"
     )
 
-    attendances = relationship(
-        "EmployeeAttendance",
-        back_populates="employee",
-        cascade="all, delete-orphan"
+    employee = relationship(
+        "Employee",
+        back_populates="attendances"
     )

@@ -2,7 +2,7 @@ from datetime import datetime, time
 
 from starlette.middleware.sessions import Session
 
-from app.models.employee_attendance import Attendance
+from app.models.attendance import Attendance
 from app.repositories.attendance_repository import AttendanceRepository
 from app.exceptions.custom_exception import AttendanceException
 

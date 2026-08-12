@@ -3,7 +3,7 @@ from datetime import date
 from app.models import Attendance
 from app.models.user import User
 
-from app.models.employee_attendance import Attendance
+from app.models.attendance import Attendance
 
 
 class DashboardService:

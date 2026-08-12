@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 
 from app.core.config import settings
 from app.models.base_model import Base
+
 
 DATABASE_URL = (
     f"postgresql+psycopg2://"
@@ -13,7 +14,12 @@ DATABASE_URL = (
     f"{settings.DATABASE_NAME}"
 )
 
-engine = create_engine(DATABASE_URL, echo=True)
+
+engine = create_engine(
+    DATABASE_URL,
+    echo=True
+)
+
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -21,13 +27,13 @@ SessionLocal = sessionmaker(
     bind=engine,
 )
 
-Base = declarative_base()
 
 def test_connection():
     try:
         with engine.connect() as connection:
             connection.execute(text("SELECT 1"))
             print("✅ Database Connected Successfully")
+
     except Exception as e:
         print("❌ Database Connection Failed")
         print(e)

@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship
 
 
 class User(BaseModel):
+
     __tablename__ = "users"
 
     username = Column(
@@ -36,8 +37,9 @@ class User(BaseModel):
         nullable=False,
         default=Role.USER
     )
-    attendances = relationship(
-        "Attendance",
-        back_populates="employee",
-        cascade="all, delete-orphan"
+
+    employee = relationship(
+        "Employee",
+        back_populates="user",
+        uselist=False
     )

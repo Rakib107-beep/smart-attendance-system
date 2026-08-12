@@ -2,7 +2,7 @@ from datetime import date
 
 from sqlalchemy.orm import Session
 
-from app.models.employee_attendance import Attendance
+from app.models.attendance import Attendance
 
 
 class AttendanceRepository:
