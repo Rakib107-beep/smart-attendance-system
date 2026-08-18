@@ -5,12 +5,16 @@ from sqlalchemy.orm import Session
 
 from app.auth.dependencies import get_current_user
 from app.database.session import get_db
+from app.models import User
+
 from app.schemas.employee_schema import (
     EmployeeCreate,
     EmployeeUpdate,
     EmployeeResponse
 )
+
 from app.services.employee_service import EmployeeService
+
 
 router = APIRouter(
     prefix="/api/v1/employees",
@@ -18,18 +22,15 @@ router = APIRouter(
 )
 
 
-@router.post(
-    "",
-    response_model=EmployeeResponse
-)
+@router.post("")
 def create_employee(
-        request: EmployeeCreate,
-        db: Session = Depends(get_db),
-        current_user=Depends(get_current_user)
+    request: EmployeeCreate,
+    db=Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     return EmployeeService.create(
         db,
-        request
+        request,
     )
 
 

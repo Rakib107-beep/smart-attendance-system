@@ -9,26 +9,25 @@ class EmployeeRepository:
     @staticmethod
     def create(
             db: Session,
-            employee: EmployeeCreate
-    ) -> Employee:
-
-        db_employee = Employee(
-            employee_code=employee.employee_code,
-            first_name=employee.first_name,
-            last_name=employee.last_name,
-            email=employee.email,
-            phone=employee.phone,
-            department=employee.department,
-            designation=employee.designation,
-            joining_date=employee.joining_date,
-            status=employee.status
+            request: EmployeeCreate,
+            user_id: int
+    ):
+        employee = Employee(
+            user_id=user_id,
+            employee_code=request.employee_code,
+            first_name=request.first_name,
+            last_name=request.last_name,
+            email=request.email,
+            phone=request.phone,
+            department=request.department,
+            designation=request.designation,
+            joining_date=request.joining_date,
+            status=request.status
         )
 
-        db.add(db_employee)
-        db.commit()
-        db.refresh(db_employee)
+        db.add(employee)
 
-        return db_employee
+        return employee
 
     @staticmethod
     def get_all(db: Session):

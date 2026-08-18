@@ -18,13 +18,8 @@ export const getEmployeeById = async (id) => {
 
 export const createEmployee = async (employee) => {
 
-    const response = await api.post(
-        "/employees",
-        employee
-    );
-
+    const response = await api.post("/employees", employee);
     return response.data;
-
 };
 
 export const updateEmployee = async (

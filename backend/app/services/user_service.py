@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 
 from app.auth.jwt_handler import create_access_token
 from app.auth.password import hash_password, verify_password
-from app.models.enums import role
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.user_schema import UserCreate
